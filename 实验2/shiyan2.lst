@@ -1,0 +1,48 @@
+A51 MACRO ASSEMBLER  SHIYAN2                                                              04/17/2019 18:29:44 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN .\shiyan2.obj
+ASSEMBLER INVOKED BY: E:\KEIL\C51\BIN\A51.EXE I:\shiyan2.asm SET(SMALL) DEBUG PRINT(.\shiyan2.lst) OBJECT(.\shiyan2.obj)
+                       EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000 80FE              1                 SJMP        MAIN
+0000                   2             ORG             0000H
+0000 7DFF              3     MAIN:   MOV             R5,#0FFH
+0002 7EBB              4                     MOV             R6,#0BBH
+0004 7FBB              5                     MOV             R7,#0BBH
+0006 ED                6                     MOV             A,R5
+0007 8FF0              7                     MOV             B,R7
+0009 A4                8                     MUL             AB
+000A F532              9                     MOV             32H,A     
+000C 85F031           10                     MOV             31H,B
+000F EE               11                     MOV             A,R6
+0010 8FF0             12                     MOV             B,R7
+0012 A4               13                     MUL             AB
+0013 2531             14                     ADD             A,31H
+0015 F531             15                     MOV             31H,A
+0017 C5F0             16                     XCH             A,B
+0019 3400             17                     ADDC    A,#00
+001B F530             18                     MOV             30H,A
+                      19                     
+001D 80FE             20                     SJMP $
+                      21                     
+                      22                     END
+A51 MACRO ASSEMBLER  SHIYAN2                                                              04/17/2019 18:29:44 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+MAIN . . . . . . .  C ADDR   0000H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
