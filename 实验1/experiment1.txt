@@ -1,0 +1,18 @@
+         ORG       0000H
+		 SJMP      MAIN
+		 ORG       0030H
+MAIN:    MOV       R2,2FH
+
+         MOV       P2,#01H
+		 MOV       R0,#00H
+		
+		 MOV       DPTR,#200H
+
+LOOP:     MOVX      A,@R0
+	   	MOVX      @DPTR,A
+         INC       R0
+		 INC       DPTR
+
+		 DJNZ      R2,LOOP
+		 SJMP       $
+		 END
