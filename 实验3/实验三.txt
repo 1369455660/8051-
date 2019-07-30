@@ -1,0 +1,27 @@
+          SJMP  MAIN
+		  ORG   0000H
+
+MAIN:     MOV   A,30H
+          MOV   B,31H
+		  DIV   AB
+		  MOV   R2,A
+		  MOV   R3,B
+		  MOV   A,B
+		  JNZ   FIS
+		  MOV   33H,R2
+		  SJMP  $
+
+FIS:      MOV   A,#2
+          MOV   B,R3
+          MUL   AB
+		  CLR   Cy
+		  SUBB  A,R2
+		  JC    FIS1
+		  MOV   33H,R2
+		  INC   33H  
+		  SJMP  $
+
+FIS1:     MOV   33H,R2
+          SJMP  $
+
+		  END

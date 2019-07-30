@@ -1,0 +1,70 @@
+A51 MACRO ASSEMBLER  ASM                                                                  05/29/2019 14:51:01 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN asm.OBJ
+ASSEMBLER INVOKED BY: E:\KEIL\C51\BIN\A51.EXE asm.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                        ORG   0000H
+0000 011D              2                        AJMP  MAIN
+001B                   3                        ORG   001BH
+001B 0135              4                        AJMP  IT1P
+                       5                      
+001D 7900              6     MAIN:      MOV   R1,#00H
+001F 902100            7                        MOV   DPTR,#2100H
+0022 7814              8                        MOV   R0,#14H
+0024 758910            9                        MOV   TMOD,#10H
+0027 758BB0           10                        MOV   TL1,#0B0H
+002A 758D3C           11                        MOV   TH1,#03CH
+002D D2AB             12                        SETB  ET1
+002F D28E             13                        SETB  TR1
+0031 D2AF             14                        SETB  EA
+0033 80FE             15                        SJMP  $
+                      16     
+0035 758BB0           17     IT1P:      MOV   TL1,#0B0H
+0038 758D3C           18                MOV   TH1,#03CH
+003B D80C             19                        DJNZ  R0,EXIT
+003D 7814             20                        MOV   R0,#14H
+003F 09               21                        INC   R1
+0040 B90802           22                        CJNE  R1,#08H,LED
+0043 7900             23                        MOV   R1,#00H
+                      24     
+0045 E9               25     LED:       MOV   A,R1
+0046 93               26                MOVC  A,@A+DPTR
+0047 F5A0             27                MOV   P2,A      
+                      28                      
+0049 32               29     EXIT:      RETI
+                      30                        
+2100                  31                        ORG   2100H
+2100 FFFAF5AF         32                        DB    0FFH,0FAH,0F5H,0AFH,05FH,0AAH,055H,00H,0FFH
+2104 5FAA5500                
+2108 FF                      
+                      33                                             
+                      34                        END
+A51 MACRO ASSEMBLER  ASM                                                                  05/29/2019 14:51:01 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+EXIT . . . . . . .  C ADDR   0049H   A   
+IT1P . . . . . . .  C ADDR   0035H   A   
+LED. . . . . . . .  C ADDR   0045H   A   
+MAIN . . . . . . .  C ADDR   001DH   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

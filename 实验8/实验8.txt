@@ -1,0 +1,66 @@
+      ORG    0000H
+      SJMP   MAIN  
+
+	  ORG    001BH
+	  SJMP   IT1P
+	  ORG    0040H
+MAIN: MOV    33H,#0AH
+	  MOV    31H,#00H
+	  MOV    30H,#00H
+	  MOV    TMOD,#10H
+	  MOV    TL1,#0B0H
+	  MOV    TH1,#3CH
+	  SETB   TR1
+	  SETB   ET1
+	  SETB   EA	  
+      MOV    SCON,#00
+      MOV    DPTR,#TAB
+      MOV    R0,#30H
+      MOV    R7,#02
+	  SJMP   $
+	  
+
+IT1P: 
+	  MOV    TL1,#0B0H
+	  MOV    TH1,#3CH
+	  DJNZ   33H,RETURN
+	  MOV    33H,#0AH
+	  MOV    A,30H
+	  ADD    A,#01H
+	  DA     A
+	  MOV    30H,A
+	  CJNE   A,#60H,LOOP
+	  MOV    30H,#00H
+	  MOV    A,31H
+	  ADD    A,#01H
+	  DA     A
+	  MOV    31H,A
+	  CJNE   A,#60H,LOOP
+	  MOV    31H,#00H
+RETURN:
+      
+	  RETI
+LOOP:	
+   MOV    A,@R0
+   ANL    A,#0FH
+   MOVC   A,@A+DPTR
+   MOV    SBUF,A
+  ; ACALL  DELAY
+   JNB    TI,$
+   CLR    TI
+   MOV    A,@R0
+   SWAP   A
+   ANL    A,#0FH
+   MOVC   A,@A+DPTR
+   MOV    SBUF,A
+   ;ACALL  DELAY
+   JNB    TI,$
+   CLR    TI
+   INC    R0
+   DJNZ   R7,LOOP
+   RETI
+
+
+
+   TAB:   DB 03H,9FH,25H,0DH,99H,49H,41H,1FH,01H,09H
+   END

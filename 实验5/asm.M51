@@ -1,0 +1,55 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        05/14/2019  14:46:34  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+E:\KEIL\C51\BIN\BL51.EXE asm.obj TO asm
+
+
+INPUT MODULES INCLUDED:
+  asm.obj (ASM)
+
+
+LINK MAP OF MODULE:  asm (ASM)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     001CH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  asm (ASM)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ASM
+  D:00F0H         SYMBOL        B
+  C:000CH         SYMBOL        LOOP
+  C:0010H         SYMBOL        LP1
+  C:0010H         SYMBOL        LP2
+  C:0002H         SYMBOL        MAIN
+  D:00A0H         SYMBOL        P2
+  C:0000H         LINE#         2
+  C:0002H         LINE#         5
+  C:0004H         LINE#         6
+  C:0006H         LINE#         7
+  C:0008H         LINE#         8
+  C:000AH         LINE#         9
+  C:000CH         LINE#         12
+  C:000EH         LINE#         13
+  C:0010H         LINE#         15
+  C:0013H         LINE#         16
+  C:0014H         LINE#         17
+  C:0017H         LINE#         18
+  C:0019H         LINE#         19
+  C:001BH         LINE#         20
+  -------         ENDMOD        ASM
+
+Program Size: data=8.0 xdata=0 code=28
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

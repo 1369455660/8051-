@@ -1,0 +1,40 @@
+				  ORG	0000H
+						  SJMP	MAIN
+						  ORG	0030H
+				MAIN:	  MOV	R2,#0
+						  MOV	DPTR,#TAB1
+				LP1:	  MOV	A,R2
+						  MOVC	A,@A+DPTR
+						  MOV	P3,A
+						  MOV	A,R2
+						  INC	R2
+						  MOV	A,R2
+						  MOVC	A,@A+DPTR
+						  MOV	P1,A
+						  INC	R2
+						  ACALL	DELAY
+						  CJNE	R2,#25,LP1
+						  MOV	R2,#0
+						  MOV	DPTR,#TAB2
+				LP2:	  MOV	A,R2
+						  MOVC	A,@A+DPTR
+						  MOV	P3,A
+						  MOV	A,R2
+						  INC	R2
+						  MOVC	A,@A+DPTR
+						  MOV	P1,A
+						  INC	R2
+						  ACALL	DELAY
+						  CJNE	R2,#25,LP2
+						  SJMP	$
+				TAB1:	  DW	0FFEH,0FFCH,0FFBH,0FF0H,0FE0H,0FC0H,0FB0H,0F00H,0E00H,0C00H,0B00H,0000H,0FFFH
+				TAB2:	  DW	07FFH,03FFH,01FFH,00FFH,007FH,003FH,001FH,000FH,0007H,0003H,0001H,0000H,0FFFH
+
+				DELAY:	MOV		R3,#100
+				LOOP1:	MOV		R4,#100
+				LOOP2:	MOV		B,#50
+				LOOP3:	DJNZ	B,LOOP3
+						DJNZ	R4,LOOP2
+						DJNZ	R3,LOOP1
+						RET
+						END

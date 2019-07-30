@@ -1,0 +1,67 @@
+A51 MACRO ASSEMBLER  SHIYAN                                                               05/08/2019 14:40:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN .\shiyan.obj
+ASSEMBLER INVOKED BY: E:\KEIL\C51\BIN\A51.EXE I:\shiyan.asm SET(SMALL) DEBUG PRINT(.\shiyan.lst) OBJECT(.\shiyan.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                   ORG       0000H
+0000 802E              2                   SJMP      MAIN
+0030                   3                   ORG       0030H
+                       4     
+                       5     
+0030 E4                6     MAIN:     CLR       A
+0031 7830              7               MOV       R0,#30H
+0033 F6                8     CLR1:     MOV       @R0,A
+0034 08                9               INC       R0
+0035 B834FB           10                       CJNE      R0,#34H,CLR1
+                      11     
+0038 7F18             12                       MOV       R7,#24
+003A C3               13     LOOP:     CLR       C
+003B EC               14               MOV       A,R4
+003C 33               15                       RLC       A
+003D FC               16                       MOV       R4,A
+003E EB               17                       MOV       A,R3
+003F 33               18                       RLC       A
+0040 FB               19                       MOV       R3,A
+0041 EA               20                       MOV       A,R2
+0042 33               21                       RLC       A
+0043 FA               22                       MOV       R2,A
+0044 92D5             23                       MOV       F0,C
+0046 7933             24                       MOV       R1,#33H
+0048 A2D5             25     DAD:      MOV       C,F0
+004A E7               26               MOV       A,@R1
+004B 37               27                       ADDC      A,@R1
+004C D4               28                       DA        A
+004D F7               29                       MOV       @R1,A
+004E 19               30                       DEC       R1
+004F 92D5             31                       MOV       F0,C
+0051 B92FF4           32                       CJNE      R1,#2FH,DAD
+0054 DFE4             33                       DJNZ      R7,LOOP
+0056 80FE             34                       SJMP      $
+                      35                       END
+                             
+                             
+                             
+                                                  
+A51 MACRO ASSEMBLER  SHIYAN                                                               05/08/2019 14:40:58 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CLR1 . . . . . . .  C ADDR   0033H   A   
+DAD. . . . . . . .  C ADDR   0048H   A   
+F0 . . . . . . . .  B ADDR   00D0H.5 A   
+LOOP . . . . . . .  C ADDR   003AH   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

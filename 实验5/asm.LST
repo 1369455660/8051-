@@ -1,0 +1,51 @@
+A51 MACRO ASSEMBLER  ASM                                                                  05/14/2019 14:56:46 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN asm.OBJ
+ASSEMBLER INVOKED BY: E:\KEIL\C51\BIN\A51.EXE asm.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                ORG    0000H
+0000 8000              2                SJMP   MAIN
+                       3     
+0002                   4     MAIN:  
+0002 C2A0              5            CLR    P2.0
+0004 110C              6                ACALL  LOOP
+0006 D2A0              7                SETB   P2.0
+0008 110C              8                ACALL  LOOP     
+000A 80F6              9                SJMP   MAIN
+                      10     
+000C                  11     LOOP:       
+000C 7AC8             12                MOV    R2,#200
+000E 7B0A             13            MOV    R3,#10
+0010                  14     LP1:
+0010 75F0F8           15     LP2:   MOV    B,#248
+0013 00               16            NOP
+0014 D5F0FD           17                DJNZ   B,$
+0017 DAF7             18                DJNZ   R2,LP2
+0019 DBF5             19                DJNZ   R3,LP1
+001B 22               20                RET
+                      21     
+                      22                END
+A51 MACRO ASSEMBLER  ASM                                                                  05/14/2019 14:56:46 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+LOOP . . . . . . .  C ADDR   000CH   A   
+LP1. . . . . . . .  C ADDR   0010H   A   
+LP2. . . . . . . .  C ADDR   0010H   A   
+MAIN . . . . . . .  C ADDR   0002H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
