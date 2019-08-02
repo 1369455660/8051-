@@ -1,0 +1,276 @@
+         ORG    0000H
+         SJMP   MAIN
+         ORG    000BH
+         LJMP   ITOP
+         ORG    0030H
+
+MAIN:    MOV    50H,#0FFH
+         MOV    30H,#1
+         MOV    31H,#1
+         MOV    32H,#0
+         MOV    33H,#0
+         MOV    34H,#0
+         MOV    2FH,#16
+         CLR    20H.1
+         SETB   20H.0
+         MOV    TMOD,#01H
+         MOV    TH0,#0BH
+         MOV    TL0,#0DCH
+         MOV    IE,#82H
+         SETB   TR0
+         SJMP   $
+
+ITOP:    PUSH   PSW
+         PUSH   ACC
+         MOV    TH0,#0BH
+         MOV    TL0,#0DCH
+         DJNZ   2FH,KEY 
+         MOV    2FH,#16
+         MOV    A,34H
+         ADD    A,#01H
+         DA     A
+         MOV    34H,A
+		 CJNE   A,#60H,KEY
+		 MOV    34H,#00H
+         MOV    A,33H
+         ADD    A,#01H
+         DA     A 
+         MOV    33H,A
+         CJNE   A,#60H,KEY
+         MOV    33H,#00H 
+         MOV    A,32H
+         ADD    A,#01H
+         DA     A 
+         MOV    32H,A
+         CJNE   A,#24H,KEY
+         MOV    32H,#00H
+         MOV    A,31H
+         ADD    A,#01H
+         DA     A
+         MOV    31H,A
+         CJNE   A,#31H,KEY
+         MOV    31H,#01H
+         MOV    A,30H
+         ADD    A,#01H
+         DA     A 
+         MOV    30H,A
+         CJNE   A,#12H,KEY
+         MOV    30H,#01H   
+
+KEY:     JNB    20H.1,ZOUSHI
+         LJMP   JIAOSHI
+
+ZOUSHI:  MOV    A,P1
+         CJNE   A,50H,KEY1
+         LJMP   NONE1
+
+KEY1:    MOV    50H,A
+         JNB    ACC.4,SWITCH1
+         JNB    ACC.5,SET1
+         LJMP   NONE1
+
+SWITCH1: CPL    20H.0
+
+NONE1:   JNB    20H.0,DATE1
+         MOV    3BH,32H
+         MOV    3AH,33H
+		 ;MOV    39H,34H
+         LJMP   DISP
+
+DATE1:   MOV    3BH,30H
+         MOV    3AH,31H
+		 ;MOV    39H,#00
+         LJMP   DISP
+
+SET1:    SETB   20H.1
+         MOV    21H,#0
+         CLR    20H.0
+         MOV    3BH,30H
+         MOV    3AH,31H
+		 MOV    39H,#00
+         LJMP   DISP 
+
+JIAOSHI: MOV A,P1
+         CJNE A,50H,KEY2 
+         LJMP NONE2 
+
+KEY2:    MOV 50H,A 
+         JNB ACC.5,SET2 
+         JNB ACC.6,ADD2 
+         JNB ACC.7,SURE 
+         LJMP NONE2 
+
+SET2:    INC 21H 
+         ANL 21H,#03H
+         SJMP NONE2 
+
+ADD2:    MOV A,#30H 
+         ADD A,21H 
+         MOV R0,A 
+         MOV A,@R0 
+         ADD A,#1 
+         DA A 
+         MOV @R0,A 
+         CJNE R0,#30H,DATE 
+         CJNE @R0,#13H,NONE2 
+         MOV @R0,#1 
+         SJMP NONE2 
+
+DATE:    CJNE R0,#31H,HOUR 
+         CJNE @R0,#32H,NONE2 
+         MOV @R0,#1 
+         SJMP NONE2 
+
+HOUR:    CJNE R0,#32H,MIN 
+         CJNE @R0,#24H,NONE2 
+         MOV @R0,#0 
+         SJMP NONE2 
+
+MIN:     CJNE R0,#24H,NONE2                                                  
+         CJNE @R0,#60H,NONE2 
+         MOV @R0,#0 
+         SJMP NONE2 
+
+;SEC:     CJNE @R0,#60H,NONE2
+;         MOV  @R0,#0
+;         SJMP NONE2
+
+SURE:    CLR 20H.1 
+         SJMP TIME2 
+
+NONE2:   JNB 21H.1,DATE2 
+
+TIME2:   SETB 20H.0 																																											 
+         MOV 3BH,32H 
+         MOV 3AH,33H
+		 ;MOV 39H,34H 
+         LJMP DISP 
+
+DATE2:   CLR     20H.0 
+         MOV     3BH,30H 
+         MOV     3AH,31H 
+		 ;MOV     39H,#00
+
+DISP:    MOV     A,3BH 
+         ANL     A,#0F0H 
+         SWAP    A 
+         MOV     43H,A 
+         MOV     A,3BH 
+         ANL     A,#0FH 
+         MOV     42H,A 
+         MOV     A,3AH 
+         ANL     A,#0F0H 
+         SWAP    A 
+         MOV     41H,A 
+         MOV     A,3AH 
+         ANL     A,#0FH 
+         MOV     40H,A 
+         ;MOV     A,39H 
+         ;ANL     A,#0F0H
+         ;SWAP    A
+         ;MOV     41H,A
+         ;MOV     A,39H
+         ;ANL     A,#0FH
+         ;MOV     40H,A
+         JNB     20H.1,DISP1 
+         JNB     2FH.3,DISP1 
+         JNB     21H.0,N1 
+         MOV     40H,#0AH 
+         MOV     41H,#0AH 
+         SJMP    DISP1 
+
+N1:      MOV 42H,#0AH 
+         MOV 43H,#0AH
+	     LJMP DISP1
+
+DISP1:   MOV DPTR,#TAB 
+         MOV A,40H 
+         MOVC A,@A+DPTR
+         CJNE A,#09H,NEXT1 
+         MOV A,#0FFH 
+
+NEXT1:    MOV SBUF,A 
+          JNB TI,$
+          CLR TI
+          MOV A,41H 
+          MOVC A,@A+DPTR
+          MOV SBUF,A 
+          JNB TI,$ 
+          MOV A,42H 
+          CLR TI 
+          MOVC A,@A+DPTR 
+          JNB 20H.0,NEXT2 
+         ;CJNE A,#11H,NEXT2
+         ;MOV A,#0FFH
+         ;MOV C,2FH.3
+         ;ANL C,20H.0
+          MOV C,2FH.3
+          MOV ACC.4,C
+
+NEXT2:    MOV SBUF,A 
+          JNB TI,$
+          CLR TI
+          MOV A,43H 
+          MOVC A,@A+DPTR
+          MOV SBUF,A 
+          JNB TI,$ 
+          MOV A,44H 
+          CLR TI 
+          MOVC A,@A+DPTR 
+          JNB 20H.0,NEXT2 
+         ;CJNE A,#11H,NEXT2
+         ;MOV A,#0FFH
+         ;MOV C,2FH.3
+         ;ANL C,20H.0
+          MOV C,2FH.3
+          MOV ACC.4,C
+
+;NEXT3:    MOV SBUF,A
+;          JNB TI,$
+;          CLR TI
+;          MOV A,45H 
+;          MOVC A,@A+DPTR
+;          MOV SBUF,A
+ ;         JNB TI,$
+;          CLR TI
+          POP ACC 
+          POP PSW
+          RETI
+
+;DISP0:    MOV DPTR,#TAB 
+ ;         MOV A,40H 
+ ;         MOVC A,@A+DPTR
+  ;        MOV SBUF,A 
+   ;       JNB TI,$
+   ;       CLR TI
+   ;       MOV A,41H 
+   ;       MOVC A,@A+DPTR
+    ;      MOV SBUF,A 
+    ;      JNB TI,$ 
+     ;     MOV A,42H 
+     ;     CLR TI 
+    ;      MOVC A,@A+DPTR 
+      ;    MOV SBUF,A 
+     ;     JNB TI,$
+      ;    CLR TI
+      ;    MOV A,43H 
+      ;    MOVC A,@A+DPTR
+       ;   MOV SBUF,A 
+      ;    JNB TI,$ 
+      ;    MOV A,44H 
+      ;    CLR TI 
+      ;    MOVC A,@A+DPTR 
+      ;    MOV SBUF,A
+      ;    JNB TI,$
+      ;    CLR TI
+      ;    MOV A,45H 
+      ;    MOVC A,@A+DPTR
+      ;    MOV SBUF,A
+      ;    JNB TI,$
+      ;    CLR TI
+      ;    POP ACC 
+      ;    POP PSW
+      ;    RETI
+
+TAB:      DB 03H,9FH,25H,0DH,99H,49H,41H,1FH,01H,09H
+          END

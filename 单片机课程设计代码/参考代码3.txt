@@ -1,0 +1,163 @@
+K1    BIT   P1.0
+K2    BIT   P1.1
+K3    BIT   P1.2
+
+SECOND  EQU  30H
+MIN     EQU  31H
+HOUR    EQU  32H
+
+ORG     0000H
+SJMP    MAIN
+ORG     000BH
+SJMP    TIMER
+
+
+MAIN:
+        MOV   DPTR,#TAB
+		MOV   HOUR,#0
+		MOV   MIN,#0
+		MOV   SECOND,#0
+		MOV   R6,#0
+
+        MOV   TMOD,#01H
+		MOV   TH0,#3CH
+		MOV   TL0,#0B0H
+		MOV   IE,#82H
+		SETB  TR0
+	
+TIMER:  
+        MOV   TH0,#3CH
+		MOV   TL0,#0B0H
+		INC   R6
+		MOV   A,R6
+		CJNE  A,#20,EXIT
+
+		INC   SECOND
+		MOV   R6,#0
+		MOV   A,SECOND
+		CJNE  A,#60,EXIT
+
+		INC   MIN
+		MOV   SECOND,#0
+		MOV   A,MIN
+		CJNE  A,#60,EXIT
+
+		INC   HOUR
+		MOV   MIN,#0
+		MOV   A,HOUR
+		CJNE  A,#24,EXIT
+
+		MOV   HOUR,#0
+		MOV   MIN,#0
+		MOV   SECOND,#0
+		MOV   R6,#0
+EXIT:   RETI
+        
+KEY:
+        LCALL  DISPLAY
+		JNB K1,ADD_SECOND
+		JNB	K2,ADD_MIN
+		JNB K3,ADD_HOUR
+		AJMP  KEY
+
+
+ADD_SECOND:
+        LCALL  DELAY
+		JB  K1,KEY
+		INC SECOND
+		MOV A,SECOND
+		CJNE A,#60,J0
+		MOV  SECOND,#0
+		AJMP MIN
+
+ADD_MIN:
+        LCALL DELAY
+		JB K2,KEY
+		INC MIN
+		MOV A,MIN
+		CJNE A,#60,J1
+		MOV  MIN,#0
+		AJMP HOUR
+
+ADD_HOUR:
+        LCALL DELAY
+		JB K3,KEY
+		INC  HOUR
+		MOV  A,HOUR
+		CJNE A,#24,J2
+
+		MOV  HOUR,#0
+		MOV  MIN,#0
+		MOV  SECOND,#0
+        AJMP KEY
+
+J0:     JB K1,KEY
+        LCALL  DISPLAY
+		SJMP  J0
+
+J1:     JB  K2,KEY
+        LCALL  DISPLAY
+		SJMP  J1
+
+J2:     JB  K3,KEY
+        LCALL DISPLAY
+		SJMP  J2
+
+DISPLAY: 
+        MOV   A,SECOND
+		MOV   B,#10
+		DIV   AB
+		CLR   P3.6
+		MOVC  A,@A+DPTR
+		MOV   P0,A
+		LCALL DELAY
+		SETB  P3.6
+
+		MOV   A,B
+		CLR   P3.7
+		MOVC  A,@A+DPTR
+		MOV   P0,A
+		LCALL DELAY
+		SETB  P3.7
+
+		MOV   A,MIN
+		MOV   B,#10
+		DIV   AB
+		CLR   P3.3
+		MOVC  A,@A+DPTR
+		MOV   P0,A
+		LCALL DELAY
+		SETB  P3.3
+
+		MOV   A,B
+		CLR   P3.4
+		MOVC  A,@A+DPTR
+		MOV   P0,A
+		LCALL DELAY
+		SETB  P3.4
+
+		MOV   A,HOUR
+		MOV   B,#10
+		DIV   AB
+		CLR   P3.0
+		MOVC  A,@A+DPTR
+		MOV   P0,A
+		LCALL DELAY
+		SETB  P3.0
+
+		MOV   A,B
+		CLR   P3.1
+		MOVC  A,@A+DPTR
+		MOV   P0,A
+		LCALL DELAY
+		SETB  P3.1
+		RETI
+
+DELAY:  MOV   R7,#250
+        DJNZ  R7,$
+		RETI
+
+	
+TAB:   DB   3FH,06H,5BH,4FH,66H,6DH,7DH,07H,7FH,6FH
+
+		END

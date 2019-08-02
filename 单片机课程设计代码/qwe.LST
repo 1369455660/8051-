@@ -1,0 +1,237 @@
+A51 MACRO ASSEMBLER  QWE                                                                  06/21/2019 12:55:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN qwe.OBJ
+ASSEMBLER INVOKED BY: E:\KEIL\C51\BIN\A51.EXE qwe.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0030                 1                      SEC    DATA   30H               ;Ãë
+  0031                 2                      MIN    DATA   31H               ;·Ö
+  0032                 3                      HOUR   DATA   32H       ;Ê±     
+0000                   4                      ORG    0000H
+0000 802E              5              SJMP   MAIN
+000B                   6              ORG    000BH                    ;¶¨Ê±Æ÷ÖÐ¶Ï0Èë¿Ú 
+000B 020053            7              LJMP   IT
+0030                   8              ORG    0030H
+                       9     
+0030 900156           10     MAIN:    MOV    DPTR,#TAB
+0033 75A000           11              MOV    P2,#0                    ;¿ªÊ¼²»Êä³ö
+0036 753000           12              MOV    SEC,#0                   ;Ãë£¬·Ö£¬Ê±µ¥ÔªÖÃ0
+0039 753100           13              MOV    MIN,#0
+003C 753200           14                      MOV    HOUR,#0
+003F 7F14             15                      MOV    R7,#20                    ;Ò»´Î50000us,20´Î¾ÍÊÇ1s
+0041 7830             16                      MOV    R0,#30H                   ;ÏÔÊ¾µ¥ÔªÖ¸Õë
+0043 758901           17                      MOV    TMOD,#01H                 ;¶¨Ê±Æ÷¼ÆÊÆ÷¹¤×÷ÔÚ·½Ê½1
+0046 758C3C           18                      MOV    TH0,#3CH                  ;³õÖµ15536
+0049 758AB0           19                      MOV    TL0,#0B0H
+004C 75A882           20                      MOV    IE,#82H
+004F D28C             21                      SETB   TR0                              ;¿ª·ÅÖÐ¶Ï
+0051 80FE             22                      SJMP   $
+                      23             
+                      24     
+0053 758C3C           25     IT:          MOV    TH0,#3CH              ;ÖÐ¶Ï³ÌÐò
+0056 758AB0           26              MOV    TL0,#0B0H
+0059 1200CC           27                      LCALL  KEY
+005C DF29             28                      DJNZ   R7,EXIT
+005E 7F14             29                      MOV    R7,#20
+0060 E530             30                      MOV    A,SEC
+0062 2401             31                      ADD    A,#01H
+0064 D4               32                      DA     A
+0065 F530             33                      MOV    SEC,A
+0067 B4601E           34                      CJNE   A,#60H,DISP
+006A 753000           35                      MOV    SEC,#0H
+006D E531             36                      MOV    A,MIN
+006F 2401             37                      ADD    A,#01H
+0071 D4               38                      DA     A
+0072 F531             39                      MOV    MIN,A
+0074 B46011           40                      CJNE   A,#60H,DISP
+0077 753100           41                      MOV    MIN,#0H
+007A E532             42                      MOV    A,HOUR
+007C 2401             43                      ADD    A,#01H
+007E F532             44                      MOV    HOUR,A
+0080 B42405           45                      CJNE   A,#24H,DISP
+0083 753200           46                      MOV    HOUR,#0H
+0086 32               47                      RETI
+                      48     
+0087 32               49     EXIT:    RETI
+                      50     
+0088 E6               51     DISP:    MOV     A,@R0           
+0089 540F             52              ANL     A,#0FH
+008B 93               53                      MOVC    A,@A+DPTR
+008C F590             54                      MOV     P1,A
+008E D2A0             55                      SETB    P2.0
+0090 C2A0             56                      CLR     P2.0
+0092 E6               57                      MOV     A,@R0
+0093 54F0             58                      ANL     A,#0F0H
+A51 MACRO ASSEMBLER  QWE                                                                  06/21/2019 12:55:29 PAGE     2
+
+0095 C4               59                      SWAP    A
+0096 93               60                      MOVC    A,@A+DPTR
+0097 F590             61                      MOV     P1,A
+0099 D2A1             62                      SETB    P2.1
+009B C2A1             63                      CLR     P2.1
+009D 08               64                      INC     R0
+009E E6               65                      MOV     A,@R0           
+009F 540F             66              ANL     A,#0FH
+00A1 93               67                      MOVC    A,@A+DPTR
+00A2 F590             68                      MOV     P1,A
+00A4 D2A2             69                      SETB    P2.2
+00A6 C2A2             70                      CLR     P2.2
+00A8 E6               71                      MOV     A,@R0
+00A9 54F0             72                      ANL     A,#0F0H
+00AB C4               73                      SWAP    A
+00AC 93               74                      MOVC    A,@A+DPTR 
+00AD F590             75                      MOV     P1,A
+00AF D2A3             76                      SETB    P2.3
+00B1 C2A3             77                      CLR     P2.3
+00B3 08               78                      INC     R0
+00B4 E6               79                      MOV     A,@R0           
+00B5 540F             80              ANL     A,#0FH
+00B7 93               81                      MOVC    A,@A+DPTR
+00B8 F590             82                      MOV     P1,A
+00BA D2A4             83                      SETB    P2.4
+00BC C2A4             84                      CLR     P2.4
+00BE E6               85                      MOV     A,@R0
+00BF 54F0             86                      ANL     A,#0F0H
+00C1 C4               87                      SWAP    A
+00C2 93               88                      MOVC    A,@A+DPTR
+00C3 F590             89                      MOV     P1,A
+00C5 D2A5             90                      SETB    P2.5
+00C7 C2A5             91                      CLR     P2.5
+00C9 7830             92                      MOV     R0,#30H
+00CB 32               93                      RETI
+                      94     
+00CC 30B001           95     KEY:     JNB     P3.0,S
+00CF 22               96              RET
+                      97     
+00D0 D2B0             98     S:       SETB    P3.0
+                      99     
+00D2 E6              100     S1:      MOV     A,@R0           
+00D3 540F            101              ANL     A,#0FH
+00D5 93              102                      MOVC    A,@A+DPTR
+00D6 F590            103                      MOV     P1,A
+00D8 D2A0            104                      SETB    P2.0
+00DA C2A0            105                      CLR     P2.0
+00DC E6              106                      MOV     A,@R0
+00DD 54F0            107                      ANL     A,#0F0H
+00DF C4              108                      SWAP    A
+00E0 93              109                      MOVC    A,@A+DPTR
+00E1 F590            110                      MOV     P1,A
+00E3 D2A1            111                      SETB    P2.1
+00E5 C2A1            112                      CLR     P2.1
+00E7 12013E          113                      LCALL   DELAY
+00EA 740A            114                      MOV     A,#0AH
+00EC 93              115                      MOVC    A,@A+DPTR
+00ED F590            116                      MOV     P1,A
+00EF D2A0            117                      SETB    P2.0
+00F1 D2A1            118                      SETB    P2.1
+00F3 C2A0            119                      CLR     P2.0
+00F5 C2A1            120                      CLR     P2.1
+00F7 12013E          121                      LCALL   DELAY
+00FA 80D6            122                      SJMP    S1
+                     123     
+00FC D2B0            124     M:               SETB    P3.0
+A51 MACRO ASSEMBLER  QWE                                                                  06/21/2019 12:55:29 PAGE     3
+
+                     125     
+00FE E6              126              MOV     A,@R0           
+00FF 540F            127              ANL     A,#0FH
+0101 93              128                      MOVC    A,@A+DPTR
+0102 F590            129                      MOV     P1,A
+0104 D2A0            130                      SETB    P2.0
+0106 C2A0            131                      CLR     P2.0
+0108 E6              132                      MOV     A,@R0
+0109 54F0            133                      ANL     A,#0F0H
+010B C4              134                      SWAP    A
+010C 93              135                      MOVC    A,@A+DPTR
+010D F590            136                      MOV     P1,A
+010F D2A1            137                      SETB    P2.1
+0111 C2A1            138                      CLR     P2.1
+0113 08              139                      INC     R0
+0114 E6              140     M1:              MOV     A,@R0           
+0115 540F            141              ANL     A,#0FH
+0117 93              142                      MOVC    A,@A+DPTR
+0118 F590            143                      MOV     P1,A
+011A D2A2            144                      SETB    P2.2
+011C C2A2            145                      CLR     P2.2
+011E E6              146                      MOV     A,@R0
+011F 54F0            147                      ANL     A,#0F0H
+0121 C4              148                      SWAP    A
+0122 93              149                      MOVC    A,@A+DPTR 
+0123 F590            150                      MOV     P1,A
+0125 D2A3            151                      SETB    P2.3
+0127 C2A3            152                      CLR     P2.3
+0129 12014A          153                      LCALL   DELAY1
+012C 740A            154                      MOV     A,#0AH
+012E 93              155                      MOVC    A,@A+DPTR
+012F F590            156                      MOV     P1,A
+0131 D2A2            157                      SETB    P2.2
+0133 D2A3            158                      SETB    P2.3
+0135 C2A2            159                      CLR     P2.2
+0137 C2A3            160                      CLR     P2.3
+0139 12014A          161                      LCALL   DELAY1
+013C 80D6            162                      SJMP    M1   
+013E                 163     H:         
+013E 7A64            164     DELAY:        MOV        R2,#100
+0140 7BFA            165     D:            MOV    R3,#250
+0142 30B0B7          166     LP2:          JNB    P3.0,M
+0145 DBFB            167                   DJNZ   R3,LP2
+0147 DAF7            168                               DJNZ   R2,D
+0149 22              169                       RET 
+                     170     
+014A 7A64            171     DELAY1:        MOV       R2,#100
+014C 7BFA            172     D1:            MOV    R3,#250
+014E 30B0ED          173     LP21:          JNB    P3.0,H
+0151 DBFB            174                    DJNZ   R3,LP21
+0153 DAF7            175                                DJNZ   R2,D1
+0155 22              176                        RET 
+                     177     
+0156 C0F9A4B0        178     TAB:    DB   0C0H,0F9H,0A4H,0B0H,99H,92H,82H,0F8H,80H,90H,0FFH
+015A 999282F8                
+015E 8090FF                  
+                     179     
+                     180     END
+A51 MACRO ASSEMBLER  QWE                                                                  06/21/2019 12:55:29 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+D. . . . . . . . .  C ADDR   0140H   A   
+D1 . . . . . . . .  C ADDR   014CH   A   
+DELAY. . . . . . .  C ADDR   013EH   A   
+DELAY1 . . . . . .  C ADDR   014AH   A   
+DISP . . . . . . .  C ADDR   0088H   A   
+EXIT . . . . . . .  C ADDR   0087H   A   
+H. . . . . . . . .  C ADDR   013EH   A   
+HOUR . . . . . . .  D ADDR   0032H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+IT . . . . . . . .  C ADDR   0053H   A   
+KEY. . . . . . . .  C ADDR   00CCH   A   
+LP2. . . . . . . .  C ADDR   0142H   A   
+LP21 . . . . . . .  C ADDR   014EH   A   
+M. . . . . . . . .  C ADDR   00FCH   A   
+M1 . . . . . . . .  C ADDR   0114H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+MIN. . . . . . . .  D ADDR   0031H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+S. . . . . . . . .  C ADDR   00D0H   A   
+S1 . . . . . . . .  C ADDR   00D2H   A   
+SEC. . . . . . . .  D ADDR   0030H   A   
+TAB. . . . . . . .  C ADDR   0156H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
